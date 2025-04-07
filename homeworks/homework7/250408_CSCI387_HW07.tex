@@ -359,7 +359,11 @@ minimum size=6pt]
     has already been revealed and therefore cannot contain a mine itself. In
     order for this graph to be consistent, then because there are only $2$
     other unrevealed nodes connected to $3$, one of $x, y, z$ has to contain a
-    mine.
+    mine. If a clause only has two variables (for instance $x\lor x \lor y$)
+    then we simply get rid of the $z$ and connect the vertex labelled $3$ to
+    $x$ and $y$. Meanwhile, if a clause consists of only one variable like with
+    $x\lor x\lor x$, then we simply connect the $3$ to $x$ and the two other
+    unlabelled, unrevealed vertices.
 
     To show that this construction is actually a reduction, we find that the
     construction is inherently consistent---either $x$ or $\bar{x}$ contains a
@@ -378,6 +382,81 @@ minimum size=6pt]
     Therefore, because $L\in \NN\PP$ and there exists a polynomial-time
     reduction from 3SAT to $L$ and 3SAT is $\NN\PP$-complete, we have that $L$
     is $\NN\PP$-complete.
+
+  \item[2.] Because PSPACE = NPSPACE by Savitch's Theorem, if we can demonstrate
+    that there exists a nondeterministic polynomial space Turing machine which
+    decides GOMOKU, we are done. Let $D$ be the following nondeterministic
+    Turing machine:
+    \begin{enumerate}[1.]
+      \item On input $\langle C\rangle$:
+      \item \tab If $C$ contains $5$ contiguous red pieces, accept.
+      \item \tab If $C$ contains $5$ contiguous blue pieces, reject.
+      \item \tab If every square but $1$ on $C$ is covered:
+      \item \tab\tab If it is the blue player's turn, reject.
+      \item \tab\tab If
+        there are not $4$ red pieces adjacent to the empty square, reject.
+      \item \tab If it is not the red player's turn, jump to step 9.
+      \item \tab Nondeterministically select an unmarked space and place a red
+        token there.
+      \item \tab For each available space $c_{i, j}$ on the board:
+      \item \tab\tab Place a blue piece at $c_{i, j}$ and call this
+        configuration $C[i,j]$.
+      \item \tab\tab Spawn a child process $D(\langle C[i,j]\rangle)$.
+      \item \tab\tab If $D(\langle C[i, j]\rangle)$ rejects, reject. Otherwise,
+        continue.
+      \item \tab If we have not yet rejected, accept.
+    \end{enumerate}
+    We know that $D$ decides GOMOKU because given a configuration $C$, we can
+    nondeterministically select the best move for red and then attempt every
+    single response that blue could produce. If blue has a move that allows
+    them to win or force a tie as we check for in steps 3 to 6, we reject
+    because red cannot force a win from the configuration $C$. However, if blue
+    attempts every single response and still cannot win or force a tie, then we
+    accept because red can force a win no matter what blue attempts. We have
+    the base case in step 2 where if a configuration has 5 contiguous red
+    pieces, then red wins from that configuration.
+
+    We know that $D\in\text{PSPACE}$ because each child process occupies space
+    in $O(n^2)$ where $n$ is the length of one side of the board. Furthermore,
+    we have a recursive depth in $O(n^2)$ because we fork at most to the depth
+    that it takes to fill the board; the number of child processes spawned at
+    any point is irrelevant. Therefore, $D$ occupies space in $O(n^4)$ which is
+    polynomial. Therefore, $\text{GOMOKU}\in\text{PSPACE}$.
+
+  \item[3.] To demonstrate that PSPACE is closed under the star operation, let
+    $L$ be a language in PSPACE. Now, we want to show that
+    $L^*\in\text{PSPACE}$. Because $L\in\text{PSPACE}$, there exists a
+    polynomial space decider $D$ for $L$. We can now construct a polynomial
+    space decider $D^*$ for $L^*$ as follows:
+    \begin{enumerate}[1.]
+      \item On input $\langle w\rangle$:
+      \item \tab If $w = \epsilon$, accept.
+      \item \tab Run $D(\langle w\rangle)$. If it accepts, accept.
+      \item \tab Let $p = 0$.
+      \item \tab Loop:
+      \item \tab\tab Nondeterministically set $d$ such that $p < d \leq |w|$.
+      \item \tab\tab Run $D(\langle w[p, d]\rangle)$ with Pythonic string
+        slicing. If it rejects, reject.
+      \item \tab\tab Set $p = d$.
+      \item \tab\tab If $d = |w|$, accept.
+    \end{enumerate}
+    This is a decider for $L^*$ because for any string $w\in L^*$, we have that
+    $w = w_1w_2w_3...w_n$ where $w_i\in L$ for all $i$. Therefore, if we can
+    iterate through and find the division points between the slices that make up
+    $w$, we are done because we can just run the decider for $L$ on each slice
+    and $D^*$ will accept $w$. Meanwhile, if no such division exists, then
+    there is exists at least one substring $w_j$ in $w$ such that $w_j\notin
+    L$, at which point $D$ will reject $w_j$ and therefore $D^*$ will reject
+    $w$. Thus, $D^*$ decides $L^*$.
+
+    To show that $D^*$ is in PSPACE, we will first show that $D^*$ is in
+    NPSPACE. Steps 2 and 3 can clearly be done in polynomial space because $L$
+    is in PSPACE. Meanwhile, steps 4, 6 and 8 are space in proportion to
+    $\langle w\rangle$. Then, step 7 is polynomial space because $L$ is in
+    PSPACE. Finally, our end condition occupies constant space. Therefore,
+    $D^*$ occupies polynomial space and $L^*\in\text{NPSPACE}$. By Savitch's
+    theorem, we also have that $L^*\in\text{PSPACE}$ and therefore PSPACE is
+    closed under the star operation.
 \end{enumerate}
 
 \end{document}

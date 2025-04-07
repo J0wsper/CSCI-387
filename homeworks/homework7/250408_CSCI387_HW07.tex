@@ -311,6 +311,73 @@ minimum size=6pt]
     from 3SAT. Given a 3-cnf boolean expression $X$, we are attempting
     to produce a graph and revealed vertex set $G, K$ such that finding whether
     or not $G, K$ is in $L$ would prove the satisfiability of $X$.
+
+    We can start by recognizing what our truth value is supposed to be. For my
+    construction, I am going to assign each literal to exactly one unrevealed
+    vertex in $G$. Then, a variable being marked as True is associated with
+    having a mine marker placed on that variable's associated vertex.
+
+    We can start by constructing a variable gadget. We want it to be that for a
+    variable $x$, either $x$ or $\bar{x}$ is True. Therefore, only $x$ or
+    $\bar{x}$ can have a mine placed on top of it. Therefore, we create a setup
+    whereby $x$ and $\bar{x}$ are adjacent to each other and they are both
+    adjcaent to a revealed vertex whose value is $1$. Thus, if there is a
+    satisfying assignment, it cannot be that both $x$ and $\bar{x}$'s vertices
+    have mines. A visual demonstration follows:
+    \begin{center}
+      \begin{tikzpicture}
+        \node [circle, draw] (1) at (0, 0) {$1$};
+        \node [circle, draw] (x_1) at (-1, -2) {$x_1$};
+        \node [circle, draw] (not x_1) at (1, -2) {$\bar{x_1}$};
+        \draw (1)--(x_1);
+        \draw (1)--(not x_1);
+      \end{tikzpicture}
+    \end{center}
+    Then, to construct a clause gadget, we want it to be that for each clause,
+    at least one of the variable's associated vertices has a mine. To do so, we
+    can construct a gadget whereby if $3$ variables are in the same clause,
+    they are all connected to a vertex labelled $3$. That vertex labeled $3$ is
+    additionally connected to $2$ other unrevealed vertices not associated with
+    any variable. For instance, in the clause $x\lor y\lor z$, we would produce
+    the following component:
+    \begin{center}
+      \begin{tikzpicture}
+        \node [circle, draw] (x) at (-2, -2) {$x$};
+        \node [circle, draw] (y) at (0, -2) {$y$};
+        \node [circle, draw] (z) at (2, -2) {$z$};
+        \node [circle, draw] (3) at (0, 0) {$3$};
+        \node [circle, draw] (b1) at (2, 2) {};
+        \node [circle, draw] (b2) at (-2, 2) {};
+        \draw (x)--(3);
+        \draw (z)--(3);
+        \draw (y)--(3);
+        \draw (3)--(b1);
+        \draw (3)--(b2);
+      \end{tikzpicture}
+    \end{center}
+    This guarantees that at least one of $x, y, z$ contains a mine because $3$
+    has already been revealed and therefore cannot contain a mine itself. In
+    order for this graph to be consistent, then because there are only $2$
+    other unrevealed nodes connected to $3$, one of $x, y, z$ has to contain a
+    mine.
+
+    To show that this construction is actually a reduction, we find that the
+    construction is inherently consistent---either $x$ or $\bar{x}$ contains a
+    mine---and that each clause must contain at least one mine. Therefore, if
+    we let our mines represent True, we have that demonstrating $G, K$ is
+    consistent is equivalent to showing that $X$ has a satisfying assignment.
+
+    In this construction, we find that because each variable $x$ has a vertex
+    in $K$ associated with its variable gadget and each clause has $3$ vertices
+    associated with its clause gadget, we get $|K| = n\cdot m$ if $m$ is the
+    number of clauses and $n$ is the number of variables. Then, $|V| = 2n +
+    |K|$. These are both polynomial in the length of our boolean expression.
+    Because $|E| \in O(|V|^2)$, we then have that we can also construct all of
+    our edges in polynomial time. Therefore, this reduction is polynomial time.
+
+    Therefore, because $L\in \NN\PP$ and there exists a polynomial-time
+    reduction from 3SAT to $L$ and 3SAT is $\NN\PP$-complete, we have that $L$
+    is $\NN\PP$-complete.
 \end{enumerate}
 
 \end{document}

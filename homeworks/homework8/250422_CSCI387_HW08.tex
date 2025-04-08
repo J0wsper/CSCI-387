@@ -1,0 +1,366 @@
+\documentclass[11pt, reqno]{amsart}
+\usepackage[margin=1in]{geometry}
+\geometry{letterpaper}
+\usepackage[parfill]{parskip} % Activate to begin paragraphs with an
+% empty line rather than an indent
+\usepackage{amsfonts, amscd, amssymb, amsthm, amsmath}
+\usepackage{mathtools} %xmapsto etc
+\usepackage{pdfsync} %leaves makers for tex searching
+\usepackage{enumerate}
+
+%%% Color %%%---------------------------------------------------------
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{dred}{HTML}{C30101}
+\definecolor{dorange}{rgb}{.9,.3,0}
+\definecolor{dgrey}{rgb}{.4,.4,.4}
+\definecolor{plumb}{HTML}{8105C1}
+\definecolor{pumpkin}{HTML}{E47604}
+\definecolor{rose}{HTML}{C10091}
+\definecolor{dgreen}{HTML}{25A75B}
+\definecolor{dblue}{HTML}{0066FF}
+\definecolor{cornflower}{HTML}{3256C3}
+\definecolor{viridian}{HTML}{099A97}
+\definecolor{alert}{HTML}{3256C3}
+
+\newcommand\plumb[1]{{\color{plumb}#1}}
+\newcommand\cornfl[1]{{\color{cornflower}#1}}
+\newcommand\dgreen[1]{{\color{dgreen}#1}}
+\newcommand\viridian[1]{{\color{viridian}#1}}
+\newcommand\dblue[1]{{\color{dblue}#1}}
+\newcommand\dred[1]{{\color{dred}#1}}
+\newcommand\gray[1]{{\color{black!40}#1}}
+\newcommand\black[1]{{\color{black}#1}}
+\newcommand\pumpk[1]{{\color{pumpkin}#1}}
+\newcommand\rose[1]{{\color{rose}#1}}
+
+\newcommand{\NOTE}[1]{{\color{cornflower}#1}}
+\newcommand{\alert}[1]{{\color{alert}#1}}
+\newcommand{\Alert}[1]{\emph{\color{alert}#1}}
+
+\usepackage{hyperref} %[pdftex,bookmarks]
+\hypersetup{
+  colorlinks=true,
+  linkcolor=viridian,
+  filecolor=viridian,
+  citecolor=viridian,
+  urlcolor=viridian,
+  pdfpagemode=FullScreen,
+}
+
+%%% Theorems %%%---------------------------------------------------------
+\theoremstyle{plain}
+\newtheorem*{thm}{Theorem}
+\newtheorem*{lemma}{Lemma}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{cor}{Corollary}
+\theoremstyle{definition}
+\newtheorem*{defn}{Definition}
+\newtheorem*{remark}{Remark}
+
+%%% Environments %%%---------------------------------------------------------
+\newenvironment{pf}{\color{black}\medskip
+\paragraph*{\emph{Proof}.}}{\hfill \qedsymbol \medskip }
+\newenvironment{ans}{\medskip \color{black}
+\paragraph*{\emph{Answer}.}}{\hfill \break $~\!\!$ \dotfill \medskip }
+\newenvironment{sketch}{\medskip \paragraph*{\emph{Proof sketch}.}}{ \medskip }
+\newenvironment{summary}{\medskip \paragraph*{\emph{Summary}.}}{
+\hfill \break \rule{1.5cm}{0.4pt} \medskip }
+\newcommand\Ans[1]{$ $\hfill {\color{black}\emph{Answer:} {#1}}}
+\newcommand{\Hint}[1]{{\small [\emph{Hint:} {#1}]}}
+
+%%% Pictures %%%---------------------------------------------------------
+%%% If you need to draw pictures, tikzpicture is one good option.
+% Here are some basic things I always use:
+\usepackage{tikz}
+\usetikzlibrary{scopes}
+\usetikzlibrary{automata}
+\usetikzlibrary{positioning}
+\usepgflibrary{shapes}
+\tikzstyle{V}=[draw, fill =black, circle, inner sep=0pt, minimum size=2pt]
+\tikzstyle{bV}=[draw, fill =black, circle, inner sep=0pt, minimum size=4pt]
+\tikzstyle{over}=[draw=white,double=black,line width=3pt]
+\tikzstyle{C}=[draw, thick, fill =white, circle, inner sep=0pt,
+minimum size=6pt]
+
+\newcommand\TikZ[1]{
+  \begin{matrix}
+    \begin{tikzpicture}#1
+    \end{tikzpicture}
+\end{matrix}}
+
+\newcounter{r}
+\newcommand\Part[1]{
+  \setcounter{r}{1}
+  \foreach \x in {#1}{
+    {\ifnum\value{r}=1
+      \draw (0,\value{r}-1)--(\x,\value{r}-1);
+    \fi}
+    \draw (0,\value{r}) to (\x,\value{r});
+    \foreach \y in {0, ..., \x} {\draw (\y,\value{r})--(\y,\value{r}-1);}
+    \addtocounter{r}{1}
+}}
+\def\PartUNIT{.175}
+%Self-contained tikz images for \Part above.
+\newcommand{\PART}[1]{
+  \begin{matrix}
+    \begin{tikzpicture}[xscale=\PartUNIT, yscale=-\PartUNIT]
+      \Part{#1}
+    \end{tikzpicture}
+  \end{matrix}
+}
+
+\def\FOUR{4}\def\ONE{1}\def\FIVE{5}\def\EIGHT{8}\def\THREE{3}\def\TWO{2}\def\SIX{6}\def\SEVEN{7}
+
+%%% Alphabets %%%---------------------------------------------------------
+%%% Some shortcuts for my commonly used special alphabets and characters.
+\def\cA{\mathcal{A}}\def\cB{\mathcal{B}}\def\cC{\mathcal{C}}\def\cD{\mathcal{D}}\def\cE{\mathcal{E}}\def\cF{\mathcal{F}}\def\cG{\mathcal{G}}\def\cH{\mathcal{H}}\def\cI{\mathcal{I}}\def\cJ{\mathcal{J}}\def\cK{\mathcal{K}}\def\cL{\mathcal{L}}\def\cM{\mathcal{M}}\def\cN{\mathcal{N}}\def\cO{\mathcal{O}}\def\cP{\mathcal{P}}\def\cQ{\mathcal{Q}}\def\cR{\mathcal{R}}\def\cS{\mathcal{S}}\def\cT{\mathcal{T}}\def\cU{\mathcal{U}}\def\cV{\mathcal{V}}\def\cW{\mathcal{W}}\def\cX{\mathcal{X}}\def\cY{\mathcal{Y}}\def\cZ{\mathcal{Z}}
+
+\def\AA{\mathbb{A}} \def\BB{\mathbb{B}} \def\CC{\mathbb{C}} \def\DD{\mathbb{D}}
+\def\EE{\mathbb{E}} \def\FF{\mathbb{F}} \def\GG{\mathbb{G}} \def\HH{\mathbb{H}}
+\def\II{\mathbb{I}} \def\JJ{\mathbb{J}} \def\KK{\mathbb{K}} \def\LL{\mathbb{L}}
+\def\MM{\mathbb{M}} \def\NN{\mathbb{N}} \def\OO{\mathbb{O}} \def\PP{\mathbb{P}}
+\def\QQ{\mathbb{Q}} \def\RR{\mathbb{R}} \def\SS{\mathbb{S}} \def\TT{\mathbb{T}}
+\def\UU{\mathbb{U}} \def\VV{\mathbb{V}} \def\WW{\mathbb{W}} \def\XX{\mathbb{X}}
+\def\YY{\mathbb{Y}} \def\ZZ{\mathbb{Z}}
+
+\def\fa{\mathfrak{a}} \def\fb{\mathfrak{b}} \def\fc{\mathfrak{c}}
+\def\fd{\mathfrak{d}} \def\fe{\mathfrak{e}} \def\ff{\mathfrak{f}}
+\def\fg{\mathfrak{g}} \def\fh{\mathfrak{h}} \def\fj{\mathfrak{j}}
+\def\fk{\mathfrak{k}} \def\fl{\mathfrak{l}} \def\fm{\mathfrak{m}}
+\def\fn{\mathfrak{n}} \def\fo{\mathfrak{o}} \def\fp{\mathfrak{p}}
+\def\fq{\mathfrak{q}} \def\fr{\mathfrak{r}} \def\fs{\mathfrak{s}}
+\def\ft{\mathfrak{t}} \def\fu{\mathfrak{u}} \def\fv{\mathfrak{v}}
+\def\fw{\mathfrak{w}} \def\fx{\mathfrak{x}} \def\fy{\mathfrak{y}}
+\def\fz{\mathfrak{z}} \def\fgl{\mathfrak{gl}}  \def\fsl{\mathfrak{sl}}
+\def\fso{\mathfrak{so}}  \def\fsp{\mathfrak{sp}}  \def\GL{\mathrm{GL}}
+\def\SL{\mathrm{SL}}  \def\SP{\mathrm{SL}}\def\OG{\mathrm{O}}
+
+\def\aa{\mathbf{a}} \def\bb{\mathbf{b}} \def\cc{\mathbf{c}} \def\dd{\mathbf{d}}
+\def\ee{\mathbf{e}} \def\ff{\mathbf{f}}
+%\def\gg{\mathbf{g}}
+\def\hh{\mathbf{h}} \def\ii{\mathbf{i}} \def\jj{\mathbf{j}} \def\kk{\mathbf{k}}
+%\def\ll{\mathbf{l}}
+\def\mm{\mathbf{m}} \def\nn{\mathbf{n}} \def\oo{\mathbf{o}} \def\pp{\mathbf{p}}
+\def\qq{\mathbf{q}} \def\rr{\mathbf{r}} \def\ss{\mathbf{s}} \def\tt{\mathbf{t}}
+\def\uu{\mathbf{u}} \def\vv{\mathbf{v}} \def\ww{\mathbf{w}} \def\xx{\mathbf{x}}
+\def\yy{\mathbf{y}} \def\zz{\mathbf{z}} \def\zzero{\mathbf{0}}
+
+\def\<{\langle} \def\>{\rangle}
+\def\Aut{\mathrm{Aut}}
+\def\ch{ \stackrel}
+\def\col{\mathrm{col}}
+\def\dim{\mathrm{dim}}
+\def\End{\mathrm{End}}
+\def\ev{\mathrm{ev}}
+\def\f{\varphi}
+\def\gcd{\mathrm{gcd}}
+\def\half{\hbox{$\frac12$}}
+\def\Hom{\mathrm{Hom}}
+\def\img{\mathrm{img}}
+\def\id{\mathrm{id}}
+\def\Inn{\mathrm{Inn}}
+\def\lcm{\mathrm{lcm}}
+\def\normeq{\trianglelefteq}
+%\def\ch{ \stackrel{\mathrm{ch}}{\trianglelefteq}}
+%\def\normeq{\trianglelefteq}
+\def\nul{\mathrm{nullity}}
+\def\row{\mathrm{row}}
+\def\rk{\mathrm{rank}}
+\def\sgn{\mathrm{sgn}}
+\def\sp{\mathrm{span}}
+\def\supp{\mathrm{supp}}
+\def\Syl{\mathrm{Syl}}
+\def\tr{\mathrm{tr}}
+\def\vep{\varepsilon}
+
+\usepackage{mathabx}
+\def\acts{\lefttorightarrow} %group action
+
+%\usepackage{mathtools}
+\usepackage{wasysym}
+
+\def\ol{\overline}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+
+\def\Hfill{$ $\hfill}
+
+% Arrows:
+\newcommand\xdhrightarrow[2][]{%
+  \mathrel{\ooalign{$\xrightarrow[#1\mkern4mu]{#2\mkern4mu}$\cr%
+  \hidewidth$\rightarrow\mkern4mu$}}
+}
+%\newcommand\dhrightarrow{%
+% \mathrel{\ooalign{$\rightarrow$\cr%
+% $\mkern3.5mu\rightarrow$}}
+%}
+\def\dhrightarrow{\twoheadrightarrow}
+\def\dhleftarrow{\twoheadleftarrow}
+\def\tab{\hspace{10pt}}
+
+% Arrays:
+\newcommand\Pmatrix[1]{
+  \begin{pmatrix}#1
+\end{pmatrix}}
+\newcommand\smatrix[1]{\text{\small$
+    \begin{pmatrix}#1
+\end{pmatrix}$}}
+\newcommand\fmatrix[1]{\text{\footnotesize$
+    \begin{pmatrix}#1
+\end{pmatrix}$}}
+\newcommand\tmatrix[1]{\text{\tiny$
+    \begin{pmatrix}#1
+\end{pmatrix}$}}
+
+\makeatletter
+\newcommand{\chareq}{%
+  \mathrel{\mathpalette\chRAW\relax}%
+}
+
+\newcommand{\chRAW}[2]{%
+  \sbox\z@{$#1\LHD$}%
+  \sbox\tw@{$#1\leqslant$}%
+  \dimen@=\ht\tw@
+  \advance\dimen@-\ht\z@
+  \advance\dimen@ .3pt
+  \ifx#1\displaystyle
+  \advance\dimen@ .2pt
+  \else
+  \ifx#1\textstyle
+  \advance\dimen@ .2pt
+  \fi
+  \fi
+  \ooalign{\raisebox{\dimen@}{$\m@th#1\LHD$}\cr$\m@th#1\leqslant$\cr}%
+}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\HW{8}
+\def\DUE{April 22nd, 2025 by 10:30am}
+
+\title[Homework \HW]{Homework \HW \\
+  Math 332, \S S01/02\\
+\small Due: \DUE}
+\author{}
+
+\begin{document}
+\begin{flushleft}
+  Bram Schuijff\\
+  CSCI 387, \S S01/02\\
+  Homework \HW\\
+  \DUE
+\end{flushleft}
+
+\begin{enumerate}
+  \item[1.] Let $A$ be a language that is PSPACE-hard. This means that for any
+    $B$ in PSPACE, it may be reduced in polynomial time to $A$. Then, we want
+    to show that for any $C$ in NP, $C$ can be reduced in polynomial time to
+    $A$. Let $C$ be in NP.
+  \item[2.] To demonstrate that $A$ is in L, we can produce a logarithmic space
+    decider for $A$. We define such a decider $D$ as follows:
+    \begin{enumerate}[1.]
+      \item On input $\langle w\rangle$:
+      \item\tab Initialize a counter that is set to $0$.
+      \item\tab While scanning from left to right across $w$:
+      \item\tab\tab If we encounter a left parenthesis, increment the counter
+        by $1$.
+      \item\tab\tab Else if we encounter a right parenthesis:
+      \item\tab\tab\tab If the counter is at $0$, reject.
+      \item\tab\tab\tab Else, decrement the counter by $1$.
+      \item\tab If the counter is not equal to $0$ by the time we read all of
+        $w$, reject. Otherwise, accept.
+    \end{enumerate}
+    I claim that $D$ decides $A$. This is because if $w$ is a string of
+    properly-nested parentheses, then for each left parenthesis, we increment
+    our counter by $1$ and for each right parenthesis, we subsequently
+    decrement our counter by $1$. Therefore, if our counter is greater than $0$
+    by the end of $w$, there is an unclosed left parenthesis and we reject.
+    Meanwhile, if our counter is at $0$ and we encounter a right parenthesis,
+    this means that right parenthesis will remain unclosed no matter what comes
+    after it in $w$ and so we reject. Meanwhile, if our counter is equal to $0$
+    by the end of $w$ and we have not rejected, all left parentheses are closed
+    and there are no outstanding right parentheses. In this case, we have
+    properly-nested parentheses and we accept. Therefore, $D$ decides $A$.
+
+    To demonstrate that $D$ takes log space, we notice that $D$ simply
+    maintains a counter. We have discussed previously that counters that count
+    occurrences of symbols in the input tape is logarithmic space with regards
+    to the input. Therefore, $D$ is log space. Therefore, because $D$ decides
+    $A$ and $D$ is logarithmic space, $A$ is in L.
+  \item[3.] To show that $A$ is in L, we can produce a logarithmic space
+    decider for $A$. We define such a decider $D$ as follows:
+    \begin{enumerate}[1.]
+      \item On input $x\#w$:
+      \item\tab Maintain $4$ counters $l_x,l_w,c_1, c_2$ each initially set to
+        $0$.
+      \item\tab For each character in $x$:
+      \item\tab\tab Increment $l_x$ by $1$.
+      \item\tab For each character in $w$:
+      \item\tab\tab Increment $l_w$ by $1$.
+      \item\tab If $l_x > l_w$, reject.
+      \item\tab While $c_1 < l_w - l_x$ + 1:
+      \item\tab\tab Scroll back to the $\#$.
+      \item\tab\tab While $c_2 < l_x$:
+      \item\tab\tab\tab Taking Pythonic string indexing, if $x[c_2]$ is not
+        equal to $w[c_1+c_2]$:
+      \item\tab\tab\tab\tab Break to the outer loop.
+      \item\tab\tab\tab Increment $c_2$ by $1$.
+      \item\tab\tab If $c_2$ is equal to $l_x$, accept.
+      \item\tab\tab Else, set $c_2 = 0$ and increment $c_1$ by $1$.
+      \item\tab Reject.
+    \end{enumerate}
+    I claim that $D$ decides $A$. This is because for any $x$ and $w$, we start
+    by counting up the lengths of $w$ and $x$ and storing them in $l_w$ and
+    $l_x$ respectively. Then, if $l_x > l_w$, we reject because it cannot be
+    that $x$ is a substring of $w$ if $x$ is longer than $w$. Then, for each
+    starting index $c_1$ in $w$, we check whether the $l_x$ characters after
+    and including $c_1$ are equal to the characters of $x$ in order. If they
+    are, then $w$ contains $x$ as a substring at starting index $c_1$.
+    Meanwhile, if we make it to the end of $w$ and have not yet found a
+    starting index in $w$ whereby the $l_x$ characters after and including that
+    index are equal to $x$, $x$ is not a substring of $w$ and so we reject.
+    Therefore, $D$ decides $A$.
+
+    To prove that $D$ is logarithmic space, we find that we maintain a constant
+    number of counters which are each bounded by $|x|$ or $|w|$. Because
+    maintaining a counter with magnitude in the length of the input string is
+    logarithmic with respect to the input string and we have a constant number
+    of these counters, we find that $D$ occupies logarithmic space. Therefore,
+    because $D$ decides $A$ and $D$ occupies logarithmic space, $A$ is in L.
+  \item[4.] To demonstrate that $A_{NFA}$ is NL-complete, we first need to show
+    that $A_{NFA}$ is in NL. To do this, we produce a log space verifier $V$
+    for $A_{NFA}$ with $x$ as the witness. I will suppose that $x$ contains a
+    computation history of $M$ on $w$. This computation history can be
+    represented as the current state of $M$ followed by the remaining unread
+    tape symbols. As such, $x[i]$ will denote the $i$-th state that $M$ got to
+    when run on $w$.
+    \begin{enumerate}[1.]
+      \item On input $\langle M, w, x\rangle$:
+      \item\tab Maintain four counters $l_w, l_x, r_w, p_x$ that are
+        initially set to $0$.
+      \item\tab For each symbol in $w$:
+      \item\tab\tab Increment $l_w$ by $1$.
+      \item\tab For each symbol in $x$:
+      \item\tab\tab Increment $l_x$ by $1$.
+      \item\tab Scroll back to the first symbol on the input tape.
+      \item\tab If the first state in $x$ is not the start state, reject.
+      \item\tab While $p_x < l_x - 1$:
+      \item\tab\tab Initialize a temporary variable $t = 0$.
+      \item\tab\tab For each symbol on the computation history's
+        input tape at $x[p_x+1]$:
+      \item\tab\tab\tab Increment $t$ by $1$.
+      \item\tab\tab If $t = r_w$:
+      \item\tab\tab\tab If $x[p_x + 1]$ cannot be reached from $x[p_x]$ by an
+        $\epsilon$ transition, reject.
+      \item\tab\tab Else if $t = r_w - 1$:
+      \item\tab\tab\tab If $x[p_x + 1]$ cannot be reached from $x[p_x]$ by
+        reading the current symbol, reject.
+      \item\tab\tab Clear $t$ from the tape.
+      \item\tab If $x[p_x]$ is an accepting state, accept.
+
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}

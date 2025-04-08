@@ -431,7 +431,6 @@ minimum size=6pt]
     \begin{enumerate}[1.]
       \item On input $\langle w\rangle$:
       \item \tab If $w = \epsilon$, accept.
-      \item \tab Run $D(\langle w\rangle)$. If it accepts, accept.
       \item \tab Let $p = 0$.
       \item \tab Loop:
       \item \tab\tab Nondeterministically set $d$ such that $p < d \leq |w|$.
@@ -441,13 +440,14 @@ minimum size=6pt]
       \item \tab\tab If $d = |w|$, accept.
     \end{enumerate}
     This is a decider for $L^*$ because for any string $w\in L^*$, we have that
-    $w = w_1w_2w_3...w_n$ where $w_i\in L$ for all $i$. Therefore, if we can
-    iterate through and find the division points between the slices that make up
-    $w$, we are done because we can just run the decider for $L$ on each slice
-    and $D^*$ will accept $w$. Meanwhile, if no such division exists, then
-    there is exists at least one substring $w_j$ in $w$ such that $w_j\notin
-    L$, at which point $D$ will reject $w_j$ and therefore $D^*$ will reject
-    $w$. Thus, $D^*$ decides $L^*$.
+    $w = w_1w_2w_3...w_n$ where $w_i\in L$ for all $i$ or that $w = \epsilon$.
+    If $w = \epsilon$, it is vacuously in $L^*$ by the nature of the star
+    operation. Otherwise, if we can iterate through and find the division
+    points between the slices that make up $w$, we are done because we can just
+    run the decider for $L$ on each slice and $D^*$ will accept $w$. Meanwhile,
+    if no such division exists, then there is exists at least one substring
+    $w_j$ in $w$ such that $w_j\notin L$, at which point $D$ will reject $w_j$
+    and therefore $D^*$ will reject $w$. Thus, $D^*$ decides $L^*$.
 
     To show that $D^*$ is in PSPACE, we will first show that $D^*$ is in
     NPSPACE. Steps 2 and 3 can clearly be done in polynomial space because $L$
